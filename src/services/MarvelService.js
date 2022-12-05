@@ -7,24 +7,27 @@ const useMarvelService = () => {
     const _apiBase = 'https://gateway.marvel.com:443/v1/public/';
     const _apiKey = 'apikey=ecaa5dcf345cfec636212d7649093a0a';
     const _baseOffset = 210;
-    const _comicsOffset = 10;
 
     // Getting comics from API and transform it
-    const getAllComics  = async (offset = _comicsOffset) => {
+    const getAllComics  = async (offset = 0) => {
         const res = await request(`${_apiBase}comics?limit=8&offset=${offset}&${_apiKey}`);
-        return res.data.results.map(_transformComic);
+        return res.data.results.map(_transformComics);
     }
 
-    const _transformComic = (comic) => {
-        const price = comic.prices[0].price ? comic.prices[0].price + ' $' : 'NOT AVAILABLE';
+    const getComics = async (id) => {
+        const res = await request(`${_apiBase}comics/${id}?${_apiKey}`);
+        return _transformComics(res.data.results[0]);
+    }
+
+    const _transformComics = (comics) => {
         return {
-            id: comic.id,
-            title: comic.title,
-            description: comic.description,
-            language: comic.textObjects.language,
-            thumbnail: comic.thumbnail.path + '.' + comic.thumbnail.extension,
-            pages: comic.pageCount,
-            price: price
+            id: comics.id,
+            title: comics.title,
+            description: comics.description || 'There is no description',
+            language: comics.textObjects.language || 'en-us',
+            thumbnail: comics.thumbnail.path + '.' + comics.thumbnail.extension,
+            pages: comics.pageCount ? `${comics.pageCount} p.` : 'No information about the number of pages',
+            price: comics.prices[0].price ? `${comics.prices[0].price}$` : 'NOT AVAILABLE'
         }
     }
 
@@ -58,7 +61,7 @@ const useMarvelService = () => {
         }
     }
 
-    return {loading, error, getAllCharacters, getCharacter, clearError, getAllComics};
+    return {loading, error, getAllCharacters, getCharacter, clearError, getAllComics, getComics};
 }
 
 export default useMarvelService;

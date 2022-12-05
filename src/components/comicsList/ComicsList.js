@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
-import ErrorMessage from '../errorMessage/ErrorMessage'
+import ErrorMessage from '../errorMessage/ErrorMessage';
+
 import './comicsList.scss';
 
 
 const ComicsList = () => {
 
     const [comicsList, setComicsList] = useState([]);
-    const [offset, setOffset] = useState(10);
     const [newItemLoading, setNewItemLoading] = useState(false);
-    const [comicEnded, setComicEnded] = useState(false);
+    const [offset, setOffset] = useState(10);
+    const [comicsEnded, setComicsEnded] = useState(false);
+
     const {loading, error, getAllComics} = useMarvelService();
 
     useEffect(() => {
@@ -31,25 +33,20 @@ const ComicsList = () => {
         }
 
         setComicsList(comicsList => [...comicsList, ...newComicsList]);
-        setNewItemLoading(newItemLoading => false);
-        setOffset(offset => offset + 8);
-        setComicEnded(comicEnded => ended);
+        setNewItemLoading(false);
+        setOffset(offset + 8);
+        setComicsEnded(ended);
 
     }
 
     const renderItems = (arr) => {
         const items = arr.map((item, i) => {
-            let imgStyle = {'objectFit' : 'cover'};
-            if (item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
-                imgStyle = {'objectFit' : 'unset'};
-            }
             return (
                 <li className="comics__item" key={i}>
                     <a href="#">
                         <img 
                              src={item.thumbnail} 
                              alt={item.title} 
-                             style={imgStyle}
                              className="comics__item-img"/>
                         <div 
                              className="comics__item-name">{item.title}
@@ -67,6 +64,7 @@ const ComicsList = () => {
     }
 
     const items = renderItems(comicsList);
+
     const errorMessage = error ? <ErrorMessage/> : null;
     const spinner = loading && !newItemLoading ? <Spinner/> : null;
 
@@ -76,9 +74,9 @@ const ComicsList = () => {
             {spinner}
             {items}
             <button 
-                className="button button__main button__long"
                 disabled={newItemLoading}
-                style={{'display': comicEnded ? 'none' : 'block'}}
+                style={{'display': comicsEnded ? 'none' : 'block'}}
+                className="button button__main button__long"
                 onClick={() => onRequest(offset)}>
                 <div className="inner">load more</div>
             </button>

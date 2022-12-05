@@ -1,38 +1,20 @@
-import { useRef } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import './appHeader.scss';
 
-const AppHeader = (props) => {
-
-    const linkRefs = useRef([]);
-
-    const onSelectPage = (page, id) => {
-        linkRefs.current.forEach(el => {
-            el.classList.remove('active')
-        })
-        linkRefs.current[id].classList.add('active');
-        props.selectPage(page);
-    }
+const AppHeader = () => {
 
     return (
         <header className="app__header">
             <h1 className="app__title">
-                <a href="#">
+                <Link to="/">
                     <span>Marvel</span> information portal
-                </a>
+                </Link>
             </h1>
             <nav className="app__menu">
                 <ul>
-                    <li>
-                        <a  ref={el => linkRefs.current[0] = el}
-                            onClick={() => onSelectPage('Characters', 0)}
-                            href="#">Characters</a>
-                    </li>
+                    <li>  <NavLink exact to="/" activeStyle={{'color': '#9f0013'}}>Characters</NavLink>  </li>
                     /
-                    <li>
-                        <a  ref={el => linkRefs.current[1] = el}
-                            onClick={() => onSelectPage('Comics', 1)}
-                            href="#">Comics</a>
-                    </li>
+                    <li>  <NavLink exact to="/comics" activeStyle={{'color': '#9f0013'}}>Comics</NavLink> </li>
                 </ul>
             </nav>
         </header>
