@@ -1,0 +1,21 @@
+.single-char {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: 293px 550px;
+    column-gap: 50px;
+
+    &__img {
+        display: block;
+        width: 100%;
+        object-fit: fill;
+    }
+    &__title {
+        font-weight: 700;
+        font-size: 22px;
+        line-height: 26px;
+        color: #000000;
+    }
+    &__descr {
+        margin-top: 25px;
+    }
+}

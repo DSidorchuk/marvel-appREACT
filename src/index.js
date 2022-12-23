@@ -9,8 +9,3 @@ ReactDOM
       <App />
   );
 
-
-
-{/* <React.StrictMode>
-  <App />
-</React.StrictMode> */}

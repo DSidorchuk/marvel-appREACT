@@ -42,6 +42,12 @@ const useMarvelService = () => {
         return _transformCharacter(res.data.results[0]);
     }
 
+    // Get character by name is using for char search form
+    const getCharacterByName = async (name) => {
+        const res = await request(`${_apiBase}characters?name=${name}&${_apiKey}`);
+        return res.data.results[0] ? _transformCharacter(res.data.results[0]) : null;
+    }
+
     const _transformCharacter = (char) => {
         let descr = char.description;
         if(!descr) {
@@ -61,7 +67,7 @@ const useMarvelService = () => {
         }
     }
 
-    return {loading, error, getAllCharacters, getCharacter, clearError, getAllComics, getComics};
+    return {loading, error, getAllCharacters, getCharacter, clearError, getAllComics, getComics, getCharacterByName};
 }
 
 export default useMarvelService;

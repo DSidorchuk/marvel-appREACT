@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import Spinner from '../spinner/Spinner';
@@ -87,7 +88,9 @@ const View = ({char}) => {
            return comics.slice(0, 9).map((item, i) => {
                 return (
                     <li key={i} className="char__comics-item">
-                        {item.name}
+                        <Link to={item.resourceURI.slice(35)}>
+                            {item.name}
+                        </Link>
                     </li>
                 )
             })
@@ -102,3 +105,4 @@ CharInfo.propTypes = {
 }
 
 export default CharInfo;
+
