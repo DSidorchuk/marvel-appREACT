@@ -45,7 +45,7 @@ const useMarvelService = () => {
     // Get character by name is using for char search form
     const getCharacterByName = async (name) => {
         const res = await request(`${_apiBase}characters?name=${name}&${_apiKey}`);
-        return res.data.results[0] ? _transformCharacter(res.data.results[0]) : null;
+        return res.data.results.map(_transformCharacter);
     }
 
     const _transformCharacter = (char) => {
